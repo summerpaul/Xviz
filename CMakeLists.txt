@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.10)
 project(Xviz VERSION 0.0.1)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
@@ -22,7 +22,9 @@ include_directories(include
 add_subdirectory(3rdParty)
 
 link_directories(${CMAKE_BINARY_DIR}/bin)
-add_subdirectory(src)
 
-add_executable(Xviz_node main.cpp)
-target_link_libraries(Xviz_node xviz)
+
+#add_subdirectory(src)
+
+#add_executable(Xviz_node main.cpp)
+#target_link_libraries(Xviz_node xviz)

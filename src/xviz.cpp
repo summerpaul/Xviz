@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 00:19:20
+ * @Last Modified time: 2023-12-23 01:42:53
  */
 #include <iostream>
 #include "xviz.h"
@@ -13,6 +13,7 @@ namespace xviz
     float Xviz::s_displayScale = 1.0f;
     Settings Xviz::s_settings;
     b2Vec2 Xviz::s_clickPointWS = b2Vec2_zero;
+    Sence Xviz::s_sence;
 
     Xviz::Xviz()
     {
@@ -121,8 +122,11 @@ namespace xviz
     void Xviz::Draw()
     {
 
-        g_debugDraw.DrawString(b2Vec2(100,100),"kkk");
-        // std::cout << "draw " << std::endl;
+
+        g_debugDraw.DrawString(b2Vec2(0,0), "kkk");
+        s_sence.Draw(s_settings);
+        // g_debugDraw.DrawTransform()
+        //  std::cout << "draw " << std::endl;
     }
 
     void Xviz::CreateUI(GLFWwindow *window, const char *glslVersion)
@@ -175,8 +179,9 @@ namespace xviz
     }
     void Xviz::ScrollCallback(GLFWwindow *window, double dx, double dy)
     {
+        std::cout << "dx is " << dx << " dy is " << dy << std::endl;
 
-        ImGui_ImplGlfw_ScrollCallback(window, dx, dy);
+       // ImGui_ImplGlfw_ScrollCallback(window, dx, dy);
         if (ImGui::GetIO().WantCaptureMouse)
         {
             return;
@@ -190,6 +195,8 @@ namespace xviz
         {
             g_camera.m_zoom *= 1.1f;
         }
+
+        std::cout << "g_camera.m_zoom is " << g_camera.m_zoom << std::endl;
     }
 
     void Xviz::UpdateUI()
