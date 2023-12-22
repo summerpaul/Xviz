@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:17
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-22 23:04:31
+ * @Last Modified time: 2023-12-23 00:11:51
  */
 #include <stdint.h>
 
@@ -19,6 +19,7 @@
 #include <memory>
 
 #include "draw.h"
+#include "settings.h"
 
 namespace xviz
 {
@@ -53,6 +54,9 @@ namespace xviz
         GLFWwindow *m_window;
 
         static float s_displayScale;
+        static Settings s_settings;
+
+        static b2Vec2 s_clickPointWS;
     };
 
 } // namespace xviz

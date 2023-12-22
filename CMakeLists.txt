@@ -15,9 +15,13 @@ include_directories(include
     3rdParty/glfw/include
     3rdParty/imgui_impl
     3rdParty/box2d/include
+    3rdParty/jsoncpp/include
     )
 
+
 add_subdirectory(3rdParty)
+
+link_directories(${CMAKE_BINARY_DIR}/bin)
 add_subdirectory(src)
 
 add_executable(Xviz_node main.cpp)
