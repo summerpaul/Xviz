@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 01:42:53
+ * @Last Modified time: 2023-12-23 09:35:32
  */
 #include <iostream>
 #include "xviz.h"
@@ -64,6 +64,9 @@ namespace xviz
         g_debugDraw.Create();
         CreateUI(m_window, glsl_version);
 
+        fileDialog.SetTitle("title");
+        fileDialog.SetTypeFilters({".h", ".cpp"});
+
         return true;
     }
     void Xviz::Run()
@@ -122,8 +125,7 @@ namespace xviz
     void Xviz::Draw()
     {
 
-
-        g_debugDraw.DrawString(b2Vec2(0,0), "kkk");
+        g_debugDraw.DrawString(b2Vec2(0, 0), "kkk");
         s_sence.Draw(s_settings);
         // g_debugDraw.DrawTransform()
         //  std::cout << "draw " << std::endl;
@@ -181,7 +183,7 @@ namespace xviz
     {
         std::cout << "dx is " << dx << " dy is " << dy << std::endl;
 
-       // ImGui_ImplGlfw_ScrollCallback(window, dx, dy);
+        // ImGui_ImplGlfw_ScrollCallback(window, dx, dy);
         if (ImGui::GetIO().WantCaptureMouse)
         {
             return;
@@ -208,9 +210,17 @@ namespace xviz
 
         if (ImGui::Button("Button")) // Buttons return true when clicked (most widgets return true when edited/activated)
         {
+            fileDialog.Open();
         }
         ImGui::SliderFloat("Hertz", &s_settings.m_hertz, 5.0f, 120.0f, "%.0f hz");
 
         ImGui::End();
+        fileDialog.Display();
+
+        if (fileDialog.HasSelected())
+        {
+            std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+            fileDialog.ClearSelected();
+        }
     }
 } // namespace xviz

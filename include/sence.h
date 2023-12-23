@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 00:49:10
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 01:36:18
+ * @Last Modified time: 2023-12-23 09:52:51
  */
 #include <stdint.h>
 
@@ -27,7 +27,7 @@ namespace xviz
     private:
         void DrawOrigin();
 
-        void DrawGrid();
+        void DrawGrid(const Settings &settings);
 
     private:
         b2World *m_world;

@@ -8,6 +8,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+
+
+
+add_subdirectory(3rdParty)
+
 include_directories(include
     3rdParty/spdlog/include
     3rdParty/imgui
@@ -16,15 +21,15 @@ include_directories(include
     3rdParty/imgui_impl
     3rdParty/box2d/include
     3rdParty/jsoncpp/include
+    3rdParty/libzmq/include
+    3rdParty/cppzmq
     )
 
 
-add_subdirectory(3rdParty)
 
 link_directories(${CMAKE_BINARY_DIR}/bin)
 
 
-#add_subdirectory(src)
-
-#add_executable(Xviz_node main.cpp)
-#target_link_libraries(Xviz_node xviz)
+add_subdirectory(src)
+add_executable(Xviz_node main.cpp)
+target_link_libraries(Xviz_node xviz)

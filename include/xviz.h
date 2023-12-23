@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:17
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 00:57:08
+ * @Last Modified time: 2023-12-23 09:34:27
  */
 #include <stdint.h>
 
@@ -21,6 +21,7 @@
 #include "draw.h"
 #include "settings.h"
 #include "sence.h"
+#include "imfilebrowser.h"
 namespace xviz
 {
 
@@ -58,6 +59,8 @@ namespace xviz
 
         static b2Vec2 s_clickPointWS;
         static Sence s_sence;
+
+        ImGui::FileBrowser fileDialog;
     };
 
 } // namespace xviz
