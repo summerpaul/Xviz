@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:17
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 15:15:47
+ * @Last Modified time: 2023-12-23 19:23:48
  */
 #include <stdint.h>
 
@@ -22,6 +22,7 @@
 #include "settings.h"
 #include "sence.h"
 #include "imfilebrowser.h"
+#include "communication.h"
 namespace xviz
 {
 
@@ -54,16 +55,14 @@ namespace xviz
         static void ScrollCallback(GLFWwindow *window, double dx, double dy);
 
     private:
-        
-
         static float s_displayScale;
         static Settings s_settings;
 
         static b2Vec2 s_clickPointWS;
-        static Sence s_sence;
         static bool s_rightMouseDown;
 
         ImGui::FileBrowser fileDialog;
+        Communication m_communication;
     };
 
 } // namespace xviz

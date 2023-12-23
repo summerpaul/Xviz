@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 00:49:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 18:15:37
+ * @Last Modified time: 2023-12-23 18:53:46
  */
 #include <iostream>
 
@@ -10,6 +10,8 @@
 #include "colors.h"
 namespace xviz
 {
+
+    Sence g_sence;
 
     namespace
     {
@@ -100,7 +102,6 @@ namespace xviz
             {
                 return;
             }
-            
 
             for (int i = 1; i < path.second.points.size(); i++)
             {

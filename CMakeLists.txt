@@ -24,6 +24,7 @@ include_directories(include
     3rdParty/libzmq/include
     3rdParty/cppzmq
     3rdParty/libzmq/include
+    common
 
     )
 
@@ -32,20 +33,18 @@ include_directories(include
 link_directories(${CMAKE_BINARY_DIR}/bin)
 
 
-set (XVIZ_SOURCE_FILES
-    src/xviz.cpp 
-    src/draw.cpp 
-    src/settings.cpp 
-    src/sence.cpp 
-    src/communication.cpp
-)
-
-
-add_library(xviz ${XVIZ_SOURCE_FILES})
-target_link_libraries(xviz  imgui_impl box2d  jsoncpp zmq)        
+      
+add_subdirectory(xviz)
 
 add_executable(XvizNode main.cpp)
 target_link_libraries(XvizNode xviz)
+
+
+
+add_subdirectory(xvizMsgSender)
+
+add_executable(xvizSenderDemo xvizSenderDemo.cpp)
+target_link_libraries(xvizSenderDemo xvizMsgSender)
 
 add_custom_command(
          TARGET XvizNode POST_BUILD

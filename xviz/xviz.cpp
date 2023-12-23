@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 18:35:22
+ * @Last Modified time: 2023-12-23 20:21:56
  */
 #include <iostream>
 #include "xviz.h"
@@ -14,7 +14,6 @@ namespace xviz
     Settings Xviz::s_settings;
     b2Vec2 Xviz::s_clickPointWS = b2Vec2_zero;
     bool Xviz::s_rightMouseDown = false;
-    Sence Xviz::s_sence;
     GLFWwindow *g_mainWindow;
 
     Xviz::Xviz()
@@ -37,6 +36,9 @@ namespace xviz
         // 相机的长宽
         g_camera.m_width = s_settings.m_windowWidth;
         g_camera.m_height = s_settings.m_windowHeight;
+        m_communication.Init();
+        m_communication.Connect(s_settings.m_subConnect);
+        
 
         if (glfwInit() == 0)
         {
@@ -80,18 +82,9 @@ namespace xviz
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         std::chrono::duration<double> frameTime(0.0);
         std::chrono::duration<double> sleepAdjust(0.0);
+        m_communication.Run();
 
-        ColorPath path;
-        path.color = COLOR::GREEN;
-        for (int i = 0; i < 100; i++)
-        {
-            Vector2f p;
-            p.x = i;
-            p.y = i;
-            path.points.emplace_back(p);
-        }
-
-        s_sence.AddPath("test", path);
+   
 
         while (!glfwWindowShouldClose(g_mainWindow))
         {
@@ -141,7 +134,7 @@ namespace xviz
 
     void Xviz::Draw()
     {
-        s_sence.Draw(s_settings);
+        g_sence.Draw(s_settings);
     }
 
     void Xviz::CreateUI(GLFWwindow *window, const char *glslVersion)
@@ -204,17 +197,17 @@ namespace xviz
             {
                 if (mods == GLFW_MOD_SHIFT)
                 {
-                    s_sence.ShiftMouseDown(pw);
+                    g_sence.ShiftMouseDown(pw);
                 }
                 else
                 {
-                    s_sence.MouseDown(pw);
+                    g_sence.MouseDown(pw);
                 }
             }
 
             if (action == GLFW_RELEASE)
             {
-                s_sence.MouseUp(pw);
+                g_sence.MouseUp(pw);
             }
         }
         else if (button == GLFW_MOUSE_BUTTON_2)
@@ -237,7 +230,7 @@ namespace xviz
 
         b2Vec2 pw = g_camera.ConvertScreenToWorld(ps);
 
-        s_sence.MouseMove(pw);
+        g_sence.MouseMove(pw);
 
         if (s_rightMouseDown)
         {
@@ -353,10 +346,10 @@ namespace xviz
                     ImGui::Checkbox("绘制鼠标", &s_settings.m_drawMousePose);
                     if (ImGui::TreeNode("绘制路径"))
                     {
-                        for (auto &path : s_sence.m_paths)
+                        for (auto &path : g_sence.m_paths)
                         {
 
-                            ImGui::Checkbox(path.first.data(), &s_sence.m_paths[path.first].draw);
+                            ImGui::Checkbox(path.first.data(), &g_sence.m_paths[path.first].draw);
                         }
                         ImGui::TreePop();
                     }

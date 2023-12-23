@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 23:22:24
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 00:06:47
+ * @Last Modified time: 2023-12-23 19:27:43
  */
 #include <iostream>
 #include "settings.h"
@@ -20,6 +20,13 @@ void Settings::Save()
     json_cfg["windowHeight"] = m_windowHeight;
     json_cfg["windowWidth"] = m_windowWidth;
     json_cfg["hertz"] = m_hertz;
+    json_cfg["drawGrid"] = m_drawGrid;
+    json_cfg["drawMousePose"] = m_drawMousePose;
+    json_cfg["drawOrigin"] = m_drawOrigin;
+    json_cfg["gridHeight"] = m_gridHeight;
+    json_cfg["gridInterval"] = m_gridInterval;
+    json_cfg["gridWidth"] = m_gridWidth;
+    json_cfg["subConnect"] = m_subConnect;
 
     std::string out = write.write(json_cfg);
     std::ofstream os(fileName);
@@ -54,6 +61,41 @@ void Settings::Load()
     if (json_cfg["windowWidth"].type() != Json::nullValue)
     {
         m_windowWidth = json_cfg["windowWidth"].asInt();
-        printf("load windowHeight\n");
+    }
+
+    if (json_cfg["drawGrid"].type() != Json::nullValue)
+    {
+        m_drawGrid = json_cfg["drawGrid"].asBool();
+    }
+
+    if (json_cfg["drawOrigin"].type() != Json::nullValue)
+    {
+        m_drawOrigin = json_cfg["drawOrigin"].asBool();
+    }
+
+    if (json_cfg["drawMousePose"].type() != Json::nullValue)
+    {
+        m_drawMousePose = json_cfg["drawMousePose"].asBool();
+    }
+
+    if (json_cfg["gridHeight"].type() != Json::nullValue)
+    {
+        m_gridHeight = json_cfg["gridHeight"].asInt();
+    }
+
+    if (json_cfg["gridWidth"].type() != Json::nullValue)
+    {
+        m_gridWidth = json_cfg["gridWidth"].asInt();
+    }
+
+    if (json_cfg["gridInterval"].type() != Json::nullValue)
+    {
+        m_gridInterval = json_cfg["gridInterval"].asInt();
+    }
+
+
+     if (json_cfg["subConnect"].type() != Json::nullValue)
+    {
+        m_subConnect = json_cfg["subConnect"].asString();
     }
 }

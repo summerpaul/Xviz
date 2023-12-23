@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 00:49:10
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 17:53:34
+ * @Last Modified time: 2023-12-23 19:08:38
  */
 #include <stdint.h>
 
@@ -49,6 +49,8 @@ namespace xviz
         b2Vec2 m_mousePose;
         std::unordered_map<std::string, ColorPath> m_paths;
     };
+
+    extern Sence g_sence;
 
 }
 

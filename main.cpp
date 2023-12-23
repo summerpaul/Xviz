@@ -2,10 +2,10 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 18:14:46
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-22 22:43:17
+ * @Last Modified time: 2023-12-23 19:42:42
  */
 #include <iostream>
-#include "xviz.h"
+#include "xviz/xviz.h"
 #include "logger.hpp"
 using namespace std;
 
