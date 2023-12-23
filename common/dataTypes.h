@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 16:47:32
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 18:15:49
+ * @Last Modified time: 2023-12-24 01:06:35
  */
 #include <stdint.h>
 
@@ -54,7 +54,6 @@ namespace xviz
     {
         COLOR color;
         Path2f points;
-        bool draw = true;
     };
 
 } // namespace xviz

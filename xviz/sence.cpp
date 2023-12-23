@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 00:49:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 18:53:46
+ * @Last Modified time: 2023-12-24 01:14:00
  */
 #include <iostream>
 
@@ -51,6 +51,11 @@ namespace xviz
     void Sence::AddPath(const std::string &name, const ColorPath &path)
     {
         m_paths[name] = path;
+        if (m_pathsDraw.count(name) == 0)
+        {
+            std::cout << "add draw_flag" << std::endl;
+            m_pathsDraw[name] = true;
+        }
     }
 
     void Sence::Draw(const Settings &settings)
@@ -71,6 +76,7 @@ namespace xviz
 
             std::string mouse_pose_str = "[" + doubleToString(m_mousePose.x) + ", " + doubleToString(m_mousePose.y) + "]";
             g_debugDraw.DrawString(m_mousePose, mouse_pose_str.data());
+            // g_debugDraw.DrawString(m_mousePose, "lll");
         }
 
         DrawPaths();
@@ -98,7 +104,7 @@ namespace xviz
     {
         for (auto &path : m_paths)
         {
-            if (path.second.points.size() < 2 || path.second.draw == false)
+            if (path.second.points.size() < 2 || m_pathsDraw[path.first] == false)
             {
                 return;
             }

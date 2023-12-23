@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 19:43:35
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 21:18:22
+ * @Last Modified time: 2023-12-24 00:45:11
  */
 #include <stdint.h>
 
@@ -17,11 +17,12 @@ namespace xviz
     class XvizMsgSender
     {
     public:
+        XvizMsgSender();
         ~XvizMsgSender();
         bool Init(const std::string connect);
         void AddPath(const std::string &name, const ColorPath &path);
         void Send();
-        void Disconnect();
+        void Shutdown();
 
     private:
         Json::Value m_jsonMsg;
@@ -29,6 +30,7 @@ namespace xviz
         zmq::context_t m_ctx;
         zmq::socket_t m_pub;
         std::string m_connect;
+        bool m_running;
     };
 
 } // namespace xviz

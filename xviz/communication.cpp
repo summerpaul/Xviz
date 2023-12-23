@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 09:42:26
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 21:24:02
+ * @Last Modified time: 2023-12-24 01:18:53
  */
 #include <iostream>
 #include "communication.h"
@@ -14,104 +14,109 @@ using namespace std;
 namespace xviz
 {
 
-    bool Communication::Init()
+    Communication::Communication() : m_running(false), m_ctx(), m_sub(m_ctx, zmq::socket_type::sub)
     {
+    }
+    Communication::~Communication()
+    {
+        Shutdown();
+    }
 
-        m_sub = zmq::socket_t(m_ctx, zmq::socket_type::sub);
+    bool Communication::Init(const std::string &connect)
+    {
+        if (m_running)
+        {
+            return m_running;
+        }
+
+        m_sub.connect(connect);
+        m_sub.set(zmq::sockopt::rcvtimeo, 100);
+        m_sub.set(zmq::sockopt::subscribe, "");
+        m_connect = connect;
+
+        m_running = true;
 
         return true;
     }
     void Communication::Run()
     {
-        m_subThread =
-            std::async(std::launch::async, &Communication::SubThread, this);
+        m_receiveThread = std::thread(&Communication::ReceiveLoop, this);
     }
 
-    void Communication::Connect(const std::string &connect)
+    void Communication::Shutdown()
     {
-        m_sub.connect(connect);
-        m_sub.set(zmq::sockopt::subscribe, "");
-    }
-
-    void Communication::DisConnect(const std::string &connect)
-    {
-
-        if (m_sub.connected())
+        if (m_running)
         {
-            m_sub.disconnect(connect);
+            m_running = false;
+            if (m_receiveThread.joinable())
+            {
+                m_receiveThread.join();
+            }
+
+            m_sub.disconnect(m_connect.c_str());
         }
     }
 
-    void Communication::SubThread()
+    void Communication::ReceiveLoop()
     {
-        std::cout << "start SubThread " << std::endl;
-        while (!glfwWindowShouldClose(g_mainWindow))
+        while (m_running)
         {
 
-            std::vector<zmq::message_t> recv_msgs;
-            zmq::recv_result_t result =
-                zmq::recv_multipart(m_sub, std::back_inserter(recv_msgs), zmq::recv_flags::dontwait);
-            if (*result == 0)
+            zmq::message_t recv_msg;
+            zmq::recv_result_t result = m_sub.recv(recv_msg);
+            if (recv_msg.size() > 0)
             {
-                std::this_thread::sleep_for(std::chrono::microseconds(100));
-            }
-            else
-            {
-
-                Json::Value json_msg;
-                Json::Reader reader;
-                if (!reader.parse(recv_msgs[0].to_string(), json_msg))
-                {
-                    std::cout << "failed to load config file " << std::endl;
-                    return;
-                }
-                else
-                {
-                    DrawJsonMsg(json_msg);
-
-                    //  std::cout << "haha" << std::endl;
-                }
+                ParseMessage(recv_msg);
             }
         }
     }
 
-    void Communication::DrawJsonMsg(const Json::Value &msg)
+    void Communication::ParseMessage(zmq::message_t &msg)
     {
-        std::cout << " json msg is " << msg << std::endl;
+        Json::Value json_msg;
+        Json::Reader reader;
+        reader.parse(msg.to_string(), json_msg);
+        ParseJsonMsg(json_msg);
+    }
+
+    void Communication::ParseJsonMsg(const Json::Value &msg)
+    {
         if (msg["paths"].type() != Json::nullValue)
         {
-            std::cout << "draw paths" << std::endl;
-            DrawJsonPathsMsg(msg["paths"]);
+            ParseJsonPathsMsg(msg["paths"]);
         }
     }
 
-    void Communication::DrawJsonPathsMsg(const Json::Value &msg)
+    void Communication::ParseJsonPathsMsg(const Json::Value &msg)
     {
-        for (auto &jsonPathMsg : msg)
-        {
 
-            DrawJsonPathMsg(jsonPathMsg);
-        }
-    }
-    void Communication::DrawJsonPathMsg(const Json::Value &json_path)
-    {
-        std::cout << "json_path is " << json_path << std::endl;
-        ColorPath color_path;
-        if (json_path["color"].type() != Json::nullValue)
+        Json::Value::Members members = msg.getMemberNames();
+        for (auto iterMember = members.begin(); iterMember != members.end(); iterMember++)
         {
-            color_path.color = COLOR(json_path["color"].asInt());
-        }
+            std::string strKey = *iterMember;
+            Json::Value json_path = msg[strKey];
 
-        if (json_path["points"].type() != Json::nullValue)
-        {
-
-            for (auto &json_pt : json_path["points"])
+            ColorPath color_path;
+            if (json_path["color"].type() != Json::nullValue)
             {
-                Vector2f pt;
-                pt.x = json_pt["x"].asDouble();
-                pt.y = json_pt["y"].asDouble();
-                color_path.points.emplace_back(pt);
+                color_path.color = COLOR(json_path["color"].asInt());
             }
+
+            if (json_path["points"].type() != Json::nullValue)
+            {
+
+                for (auto &json_pt : json_path["points"])
+                {
+                    Vector2f pt;
+                    pt.x = json_pt["x"].asDouble();
+                    pt.y = json_pt["y"].asDouble();
+                    color_path.points.emplace_back(pt);
+                }
+            }
+
+            g_sence.AddPath(strKey,color_path);
         }
     }
+    
+  
 }

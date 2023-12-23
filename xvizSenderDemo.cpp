@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 20:20:57
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 23:05:55
+ * @Last Modified time: 2023-12-24 00:47:51
  */
 #include <iostream>
 #include "xvizMsgSender/xvizMsgSender.h"
@@ -35,10 +35,9 @@ int main(int argc, char const *argv[])
     {
         sender.Send();
         std::cout << "send" << std::endl;
-        std::this_thread::sleep_for(std::chrono::microseconds(100));
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     std::cout << "jaja" << std::endl;
-    sender.Disconnect();
 
     return 0;
 }

@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 09:42:11
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 21:00:45
+ * @Last Modified time: 2023-12-24 01:02:35
  */
 #include <stdint.h>
 
@@ -19,22 +19,26 @@ namespace xviz
     class Communication
     {
     public:
-        bool Init();
+        Communication();
+        ~Communication();
+        bool Init(const std::string &connect);
         void Run();
-        void Connect(const std::string &connect);
-        void DisConnect(const std::string &connect);
+        void Shutdown();
 
     private:
-        void SubThread();
+        void ReceiveLoop();
 
-        void DrawJsonMsg(const Json::Value &msg);
-        void DrawJsonPathsMsg(const Json::Value &msg);
-        void DrawJsonPathMsg(const Json::Value &json_path);
+        void ParseMessage(zmq::message_t& msg);
+
+        void ParseJsonMsg(const Json::Value &msg);
+        void ParseJsonPathsMsg(const Json::Value &msg);
 
     private:
         zmq::context_t m_ctx;
         zmq::socket_t m_sub;
-        std::future<void> m_subThread;
+        std::thread m_receiveThread;
+        std::string m_connect;
+        bool m_running;
     };
     extern GLFWwindow *g_mainWindow;
 }

@@ -2,20 +2,29 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 19:44:45
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 21:33:04
+ * @Last Modified time: 2023-12-24 00:47:34
  */
 #include <iostream>
 #include "xvizMsgSender.h"
 using namespace std;
 namespace xviz
 {
+
+    XvizMsgSender::XvizMsgSender()
+        : m_running(false), m_ctx(), m_pub(m_ctx, zmq::socket_type::pub)
+    {
+    }
     XvizMsgSender::~XvizMsgSender()
     {
-        Disconnect();
+        Shutdown();
     }
     bool XvizMsgSender::Init(const std::string connect)
     {
-        m_pub = zmq::socket_t(m_ctx, zmq::socket_type::pub);
+
+        if (m_running)
+        {
+            return m_running;
+        }
         m_connect = connect;
         try
         {
@@ -27,7 +36,7 @@ namespace xviz
             std::cerr << e.what() << '\n';
             return false;
         }
-        std::cout << "bind " << connect << std::endl;
+        m_running = true;
         return true;
     }
     void XvizMsgSender::AddPath(const std::string &name, const ColorPath &path)
@@ -44,22 +53,22 @@ namespace xviz
         }
         m_jsonPathMsg[name] = colorPath;
     }
+
     void XvizMsgSender::Send()
     {
         m_jsonMsg["paths"] = m_jsonPathMsg;
         std::string send_str = m_jsonMsg.toStyledString();
-        std::cout << "send_str is " << send_str << std::endl;
         m_pub.send(zmq::message_t(send_str), zmq::send_flags::dontwait);
     }
 
-    void XvizMsgSender::Disconnect()
+    void XvizMsgSender::Shutdown()
     {
-        std::cout << "m_pub.connected is " << m_pub.connected() << std::endl;
 
         if (m_pub.connected())
         {
-            m_pub.disconnect(m_connect);
-            std::cout << "disconnect " << m_connect << std::endl;
+            m_pub.disconnect(m_connect.c_str());
         }
+
+        m_running = false;
     }
 }

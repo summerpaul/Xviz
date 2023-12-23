@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 22:44:56
+ * @Last Modified time: 2023-12-24 01:17:08
  */
 #include <iostream>
 #include "xviz.h"
@@ -36,9 +36,7 @@ namespace xviz
         // 相机的长宽
         g_camera.m_width = s_settings.m_windowWidth;
         g_camera.m_height = s_settings.m_windowHeight;
-        m_communication.Init();
-        m_communication.Connect(s_settings.m_subConnect);
-        
+        m_communication.Init(s_settings.m_subConnect);
 
         if (glfwInit() == 0)
         {
@@ -84,8 +82,6 @@ namespace xviz
         std::chrono::duration<double> sleepAdjust(0.0);
         m_communication.Run();
 
-   
-
         while (!glfwWindowShouldClose(g_mainWindow))
         {
 
@@ -102,6 +98,7 @@ namespace xviz
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
+            // std::cout << "new frame " << std::endl;
 
             if (g_debugDraw.m_showUI)
             {
@@ -113,11 +110,12 @@ namespace xviz
             }
 
             Draw();
+
             UpdateUI();
 
             ImGui::Render();
-            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
             glfwSwapBuffers(g_mainWindow);
             glfwPollEvents();
 
@@ -134,6 +132,7 @@ namespace xviz
 
     void Xviz::Draw()
     {
+        // std::cout << "draw " << std::endl;
         g_sence.Draw(s_settings);
     }
 
@@ -267,27 +266,6 @@ namespace xviz
         UpdateMenuBar();
         // 更新参数
         UpdateSettings();
-
-        /**
-                ImGui::Begin("Hello, world!"); // Create a window called "Hello, world!" and append into it.
-
-                ImGui::Text("This is some useful text."); // Display some text (you can use a format strings too)
-
-                if (ImGui::Button("Button")) // Buttons return true when clicked (most widgets return true when edited/activated)
-                {
-                    fileDialog.Open();
-                }
-                ImGui::SliderFloat("Hertz", &s_settings.m_hertz, 5.0f, 120.0f, "%.0f hz");
-
-                ImGui::End();
-                fileDialog.Display();
-
-                if (fileDialog.HasSelected())
-                {
-                    std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
-                    fileDialog.ClearSelected();
-                }
-                **/
     }
 
     void Xviz::UpdateMenuBar()
@@ -346,10 +324,10 @@ namespace xviz
                     ImGui::Checkbox("绘制鼠标", &s_settings.m_drawMousePose);
                     if (ImGui::TreeNode("绘制路径"))
                     {
-                        for (auto &path : g_sence.m_paths)
+                        for (auto &drawFlag : g_sence.m_pathsDraw)
                         {
 
-                            ImGui::Checkbox(path.first.data(), &g_sence.m_paths[path.first].draw);
+                            ImGui::Checkbox(drawFlag.first.data(), &g_sence.m_pathsDraw[drawFlag.first]);
                         }
                         ImGui::TreePop();
                     }
@@ -358,6 +336,7 @@ namespace xviz
                 }
                 ImGui::EndTabBar();
             }
+            ImGui::End();
         }
     }
 } // namespace xviz
