@@ -23,6 +23,8 @@ include_directories(include
     3rdParty/jsoncpp/include
     3rdParty/libzmq/include
     3rdParty/cppzmq
+    3rdParty/libzmq/include
+
     )
 
 
@@ -46,9 +48,9 @@ add_executable(XvizNode main.cpp)
 target_link_libraries(XvizNode xviz)
 
 add_custom_command(
-        TARGET XvizNode POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-                ${CMAKE_CURRENT_SOURCE_DIR}/data/
-                ${CMAKE_CURRENT_BINARY_DIR}/data/)
+         TARGET XvizNode POST_BUILD
+         COMMAND ${CMAKE_COMMAND} -E copy_directory
+                 ${CMAKE_CURRENT_SOURCE_DIR}/data/
+                 ${CMAKE_CURRENT_BINARY_DIR}/data/)
 
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${TESTBED_SOURCE_FILES})
+ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${TESTBED_SOURCE_FILES})

@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 22:44:50
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 15:10:03
+ * @Last Modified time: 2023-12-23 17:40:15
  */
 
 #ifndef DRAW_H
@@ -45,6 +45,7 @@ public:
 
 	void Create();
 	void Destroy();
+
 
 	void DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color) override;
 

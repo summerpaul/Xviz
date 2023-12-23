@@ -2,11 +2,11 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 15:41:57
+ * @Last Modified time: 2023-12-23 18:35:22
  */
 #include <iostream>
 #include "xviz.h"
-
+#include "colors.h"
 namespace xviz
 {
 
@@ -80,6 +80,18 @@ namespace xviz
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         std::chrono::duration<double> frameTime(0.0);
         std::chrono::duration<double> sleepAdjust(0.0);
+
+        ColorPath path;
+        path.color = COLOR::GREEN;
+        for (int i = 0; i < 100; i++)
+        {
+            Vector2f p;
+            p.x = i;
+            p.y = i;
+            path.points.emplace_back(p);
+        }
+
+        s_sence.AddPath("test", path);
 
         while (!glfwWindowShouldClose(g_mainWindow))
         {
@@ -224,7 +236,7 @@ namespace xviz
         b2Vec2 ps((float)xd, (float)yd);
 
         b2Vec2 pw = g_camera.ConvertScreenToWorld(ps);
-        
+
         s_sence.MouseMove(pw);
 
         if (s_rightMouseDown)
@@ -339,6 +351,16 @@ namespace xviz
                     ImGui::SliderInt("网格高度", &s_settings.m_gridHeight, 1, 40);
                     ImGui::Checkbox("绘制原点", &s_settings.m_drawOrigin);
                     ImGui::Checkbox("绘制鼠标", &s_settings.m_drawMousePose);
+                    if (ImGui::TreeNode("绘制路径"))
+                    {
+                        for (auto &path : s_sence.m_paths)
+                        {
+
+                            ImGui::Checkbox(path.first.data(), &s_sence.m_paths[path.first].draw);
+                        }
+                        ImGui::TreePop();
+                    }
+
                     ImGui::EndTabItem();
                 }
                 ImGui::EndTabBar();

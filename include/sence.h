@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 00:49:10
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 15:49:34
+ * @Last Modified time: 2023-12-23 17:53:34
  */
 #include <stdint.h>
 
@@ -12,6 +12,9 @@
 #include "draw.h"
 
 #include "settings.h"
+#include "dataTypes.h"
+#include <unordered_map>
+#include <string>
 namespace xviz
 
 {
@@ -28,18 +31,23 @@ namespace xviz
         void MouseDown(const b2Vec2 &p);
         void MouseUp(const b2Vec2 &p);
         void MouseMove(const b2Vec2 &p);
-        
 
         void Draw(const Settings &settings);
+
+        void AddPath(const std::string &name, const ColorPath &path);
 
     private:
         void DrawOrigin();
 
         void DrawGrid(const Settings &settings);
 
-    private:
-        b2World *m_world;
+        void DrawPaths();
+
+        b2Color COLOR2b2Color(const COLOR &color);
+
+    public:
         b2Vec2 m_mousePose;
+        std::unordered_map<std::string, ColorPath> m_paths;
     };
 
 }
