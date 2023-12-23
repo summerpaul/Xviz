@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 20:20:57
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 21:45:11
+ * @Last Modified time: 2023-12-23 23:05:55
  */
 #include <iostream>
 #include "xvizMsgSender/xvizMsgSender.h"
@@ -25,8 +25,8 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < 20; i++)
     {
         xviz::Vector2f p;
-        p.x = i;
-        p.y = i;
+        p.x = float(i);
+        p.y = float(i);
         path.points.emplace_back(p);
     }
     sender.AddPath("sender_test", path);

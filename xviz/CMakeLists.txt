@@ -8,4 +8,8 @@ set (XVIZ_SOURCE_FILES
 
 
 add_library(xviz ${XVIZ_SOURCE_FILES})
+
+if(WIN32)
 target_link_libraries(xviz  imgui_impl box2d  jsoncpp zmq spdlog  fmt)  
+elseif(UNIX)
+endif()

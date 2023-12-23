@@ -29,19 +29,15 @@ include_directories(
 )
 
 
+
+
 link_directories(
     ${THIRD_PARTY_LIB}
 )
 
 add_subdirectory(3rdParty)
-
-
-
-
-
       
 add_subdirectory(xviz)
-
 add_executable(XvizNode main.cpp)
 target_link_libraries(XvizNode xviz)
 
