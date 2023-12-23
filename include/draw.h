@@ -2,9 +2,8 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 22:44:50
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-22 22:52:35
+ * @Last Modified time: 2023-12-23 15:10:03
  */
-
 
 #ifndef DRAW_H
 #define DRAW_H
@@ -15,13 +14,11 @@
 
 #include "box2d/box2d.h"
 
-
 struct b2AABB;
 struct GLRenderPoints;
 struct GLRenderLines;
 struct GLRenderTriangles;
 struct GLFWwindow;
-
 
 struct Camera
 {
@@ -79,5 +76,5 @@ public:
 
 extern DebugDraw g_debugDraw;
 extern Camera g_camera;
-
+extern GLFWwindow *g_mainWindow;
 #endif

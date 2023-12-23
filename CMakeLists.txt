@@ -30,6 +30,25 @@ include_directories(include
 link_directories(${CMAKE_BINARY_DIR}/bin)
 
 
-add_subdirectory(src)
-add_executable(Xviz_node main.cpp)
-target_link_libraries(Xviz_node xviz)
+set (XVIZ_SOURCE_FILES
+    src/xviz.cpp 
+    src/draw.cpp 
+    src/settings.cpp 
+    src/sence.cpp 
+    src/communication.cpp
+)
+
+
+add_library(xviz ${XVIZ_SOURCE_FILES})
+target_link_libraries(xviz  imgui_impl box2d  jsoncpp zmq)        
+
+add_executable(XvizNode main.cpp)
+target_link_libraries(XvizNode xviz)
+
+add_custom_command(
+        TARGET XvizNode POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_CURRENT_SOURCE_DIR}/data/
+                ${CMAKE_CURRENT_BINARY_DIR}/data/)
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${TESTBED_SOURCE_FILES})

@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 23:22:08
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 09:51:21
+ * @Last Modified time: 2023-12-23 15:30:03
  */
 #include <stdint.h>
 
@@ -21,9 +21,11 @@ struct Settings
         m_windowHeight = 900;
         m_hertz = 60.0f;
         m_drawGrid = true;
-        m_gridWidth = 10.0f; 
-        m_gridHeight = 10.0f;
+        m_gridWidth = 20.0f; 
+        m_gridHeight = 20.0f;
         m_gridInterval = 1.0;
+        m_drawOrigin = true;
+        m_drawMousePose = true;
     }
 
     void Save();
@@ -32,9 +34,11 @@ struct Settings
     int m_windowHeight;
     float m_hertz;
     bool m_drawGrid;
-    float m_gridWidth;
-    float m_gridHeight;
-    float m_gridInterval;
+    int m_gridWidth;
+    int m_gridHeight;
+    int m_gridInterval;
+    bool m_drawOrigin;
+    bool m_drawMousePose;
 };
 
 #endif /* __SETTINGS_H__ */

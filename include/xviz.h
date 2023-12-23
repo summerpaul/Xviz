@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:17
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 09:34:27
+ * @Last Modified time: 2023-12-23 15:15:47
  */
 #include <stdint.h>
 
@@ -40,6 +40,8 @@ namespace xviz
         void Draw();
         void SetCallback();
         void UpdateUI();
+        void UpdateMenuBar();
+        void UpdateSettings();
 
     private:
         static void CreateUI(GLFWwindow *window, const char *glslVersion = NULL);
@@ -52,13 +54,14 @@ namespace xviz
         static void ScrollCallback(GLFWwindow *window, double dx, double dy);
 
     private:
-        GLFWwindow *m_window;
+        
 
         static float s_displayScale;
         static Settings s_settings;
 
         static b2Vec2 s_clickPointWS;
         static Sence s_sence;
+        static bool s_rightMouseDown;
 
         ImGui::FileBrowser fileDialog;
     };

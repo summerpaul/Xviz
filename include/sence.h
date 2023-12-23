@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 00:49:10
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 09:52:51
+ * @Last Modified time: 2023-12-23 15:49:34
  */
 #include <stdint.h>
 
@@ -22,7 +22,15 @@ namespace xviz
         Sence();
         ~Sence();
 
-        void Draw(const Settings& settings);
+        void Keyboard(int key) { B2_NOT_USED(key); }
+        void KeyboardUp(int key) { B2_NOT_USED(key); }
+        void ShiftMouseDown(const b2Vec2 &p);
+        void MouseDown(const b2Vec2 &p);
+        void MouseUp(const b2Vec2 &p);
+        void MouseMove(const b2Vec2 &p);
+        
+
+        void Draw(const Settings &settings);
 
     private:
         void DrawOrigin();
@@ -31,6 +39,7 @@ namespace xviz
 
     private:
         b2World *m_world;
+        b2Vec2 m_mousePose;
     };
 
 }
