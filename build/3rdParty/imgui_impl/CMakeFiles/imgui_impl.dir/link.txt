@@ -1,0 +1,2 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc ../../bin/libimgui_impl.a CMakeFiles/imgui_impl.dir/imgui_impl_glfw.cpp.o CMakeFiles/imgui_impl.dir/imgui_impl_opengl3.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib ../../bin/libimgui_impl.a

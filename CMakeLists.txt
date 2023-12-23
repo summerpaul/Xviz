@@ -11,26 +11,32 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 
-add_subdirectory(3rdParty)
 
-include_directories(include
-    3rdParty/spdlog/include
-    3rdParty/imgui
+if(WIN32)
+    set(THIRD_PARTY_LIB 3rdParty/lib/x64-windows)
+elseif(UNIX)
+    set(THIRD_PARTY_LIB 3rdParty/lib/arm64-osx)    
+endif()
+
+
+include_directories(    
+    3rdParty/include
     3rdParty/glad/include
     3rdParty/glfw/include
     3rdParty/imgui_impl
-    3rdParty/box2d/include
-    3rdParty/jsoncpp/include
-    3rdParty/libzmq/include
-    3rdParty/cppzmq
-    3rdParty/libzmq/include
+    3rdParty/imgui
     common
-
-    )
-
+)
 
 
-link_directories(${CMAKE_BINARY_DIR}/bin)
+link_directories(
+    ${THIRD_PARTY_LIB}
+)
+
+add_subdirectory(3rdParty)
+
+
+
 
 
       

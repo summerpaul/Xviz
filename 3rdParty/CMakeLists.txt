@@ -1,8 +1,4 @@
-add_subdirectory(jsoncpp)
 add_subdirectory(glad)
 add_subdirectory(glfw)
 add_subdirectory(imgui)
-add_subdirectory(box2d)
-add_subdirectory(spdlog)
 add_subdirectory(imgui_impl)
-add_subdirectory(libzmq)

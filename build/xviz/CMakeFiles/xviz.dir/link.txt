@@ -1,0 +1,2 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc ../bin/libxviz.a CMakeFiles/xviz.dir/xviz.cpp.o CMakeFiles/xviz.dir/draw.cpp.o CMakeFiles/xviz.dir/settings.cpp.o CMakeFiles/xviz.dir/sence.cpp.o CMakeFiles/xviz.dir/communication.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib ../bin/libxviz.a
