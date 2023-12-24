@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:17
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 22:42:11
+ * @Last Modified time: 2023-12-24 16:29:46
  */
 #include <stdint.h>
 
@@ -63,6 +63,12 @@ namespace xviz
 
         ImGui::FileBrowser fileDialog;
         Communication m_communication;
+
+        const char *m_colorItems[5] = {"WHITE",
+                                      "BLACK",
+                                      "RED",
+                                      "GREEN",
+                                      "BLUE"};
     };
 
 } // namespace xviz

@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 00:49:10
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 11:29:12
+ * @Last Modified time: 2023-12-24 16:51:37
  */
 #include <stdint.h>
 
@@ -16,8 +16,16 @@
 #include <unordered_map>
 #include <string>
 namespace xviz
-
 {
+
+    struct DrawPath
+    {
+        Path2f path;
+        bool draw = true;
+        int color = 0;
+        float width = 0.05;
+    };
+
     class Sence
     {
 
@@ -34,7 +42,7 @@ namespace xviz
 
         void Draw(const Settings &settings);
 
-        void AddPath(const std::string &name, const ColorPath &path);
+        void AddPath(const std::string &name, const Path2f &path);
 
     private:
         void DrawOrigin();
@@ -43,12 +51,13 @@ namespace xviz
 
         void DrawPaths();
 
-        b2Color COLOR2b2Color(const COLOR &color);
+        b2Color Int2b2Color(const int &color);
 
     public:
         b2Vec2 m_mousePose;
-        std::unordered_map<std::string, ColorPath> m_paths;
-        std::unordered_map<std::string, bool> m_pathsDraw;
+
+        std::unordered_map<std::string, DrawPath> m_paths;
+
     };
 
     extern Sence g_sence;

@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 19:43:35
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 00:45:11
+ * @Last Modified time: 2023-12-24 15:47:04
  */
 #include <stdint.h>
 
@@ -10,8 +10,12 @@
 #define __XVIZMSGSENDER_H__
 #include "zmq.hpp"
 #include "zmq_addon.hpp"
-#include "json/json.h"
 #include "dataTypes.h"
+#include "protoMessage/pb/std_msgs.pb.h"
+#include "protoMessage/pb/sensor_msgs.pb.h"
+
+#include <mutex>
+
 namespace xviz
 {
     class XvizMsgSender
@@ -20,17 +24,21 @@ namespace xviz
         XvizMsgSender();
         ~XvizMsgSender();
         bool Init(const std::string connect);
-        void AddPath(const std::string &name, const ColorPath &path);
-        void Send();
+        void PathPub(const std::string &topic, const Path2f &path);
         void Shutdown();
 
     private:
-        Json::Value m_jsonMsg;
-        Json::Value m_jsonPathMsg;
+        template <typename PROTO_MSG>
+        void PubProto(const PROTO_MSG &proto_msg,
+                      const std::string &topic, const std::string &msg_type);
+
+    private:
         zmq::context_t m_ctx;
         zmq::socket_t m_pub;
         std::string m_connect;
         bool m_running;
+
+        std::mutex m_mtx;
     };
 
 } // namespace xviz

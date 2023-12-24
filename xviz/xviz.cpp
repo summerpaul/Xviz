@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 01:43:01
+ * @Last Modified time: 2023-12-24 16:51:14
  */
 #include <iostream>
 #include "xviz.h"
@@ -324,10 +324,14 @@ namespace xviz
                     ImGui::Checkbox("绘制鼠标", &s_settings.m_drawMousePose);
                     if (ImGui::TreeNode("绘制路径"))
                     {
-                        for (auto &drawFlag : g_sence.m_pathsDraw)
+                        for (auto &drawPath : g_sence.m_paths)
                         {
+                            const std::string path_name = drawPath.first;
 
-                            ImGui::Checkbox(drawFlag.first.data(), &g_sence.m_pathsDraw[drawFlag.first]);
+                            ImGui::Checkbox(path_name.data(), &g_sence.m_paths[path_name].draw);
+
+                            ImGui::Combo((path_name + ":color").data(), &g_sence.m_paths[path_name].color, m_colorItems, IM_ARRAYSIZE(m_colorItems));
+                            ImGui::SliderFloat((path_name + ":width").data(), &g_sence.m_paths[path_name].width, 0.01, 0.5);
                         }
                         ImGui::TreePop();
                     }

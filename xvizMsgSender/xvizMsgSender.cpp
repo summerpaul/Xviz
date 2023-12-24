@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 19:44:45
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 11:03:47
+ * @Last Modified time: 2023-12-24 15:47:16
  */
 #include <iostream>
 #include "xvizMsgSender.h"
@@ -39,27 +39,33 @@ namespace xviz
         m_running = true;
         return true;
     }
-    void XvizMsgSender::AddPath(const std::string &name, const ColorPath &path)
+
+    void XvizMsgSender::PathPub(const std::string &topic, const Path2f &path)
     {
-        std::cout << "start add path " << std::endl;
-        Json::Value colorPath;
-        colorPath["color"] = int(path.color);
-        colorPath["width"] = path.width;
-        for (auto &pt : path.points)
+        std_msgs::Path2f proto_path;
+        for (auto &pt : path)
         {
-            Json::Value json_pt;
-            json_pt["x"] = pt.x;
-            json_pt["y"] = pt.y;
-            colorPath["points"].append(json_pt);
+            std_msgs::Vector2f *new_point = proto_path.add_points();
+            new_point->set_x(pt.x);
+            new_point->set_y(pt.y);
         }
-        m_jsonPathMsg[name] = colorPath;
+
+        PubProto(proto_path, topic, MSG_PATH);
     }
 
-    void XvizMsgSender::Send()
+    template <typename PROTO_MSG>
+    void XvizMsgSender::PubProto(const PROTO_MSG &proto_msg,
+                                 const std::string &topic, const std::string &msg_type)
     {
-        m_jsonMsg["paths"] = m_jsonPathMsg;
-        std::string send_str = m_jsonMsg.toStyledString();
-        m_pub.send(zmq::message_t(send_str), zmq::send_flags::dontwait);
+        std::lock_guard<std::mutex> lock(m_mtx);
+        zmq::message_t target_msg;
+        int size = proto_msg.ByteSizeLong();
+        char buff[size];
+        proto_msg.SerializeToArray(buff, size);
+        target_msg.rebuild(buff, size);
+        m_pub.send(zmq::message_t(std::string(msg_type)), zmq::send_flags::sndmore);
+        m_pub.send(zmq::message_t(std::string(topic)), zmq::send_flags::sndmore);
+        m_pub.send(target_msg);
     }
 
     void XvizMsgSender::Shutdown()

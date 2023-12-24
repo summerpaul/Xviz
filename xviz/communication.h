@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 09:42:11
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 01:02:35
+ * @Last Modified time: 2023-12-24 15:58:20
  */
 #include <stdint.h>
 
@@ -12,7 +12,8 @@
 #include "zmq_addon.hpp"
 #include "sence.h"
 #include <future>
-#include "json/json.h"
+#include "protoMessage/pb/std_msgs.pb.h"
+#include "protoMessage/pb/sensor_msgs.pb.h"
 namespace xviz
 {
 
@@ -28,10 +29,7 @@ namespace xviz
     private:
         void ReceiveLoop();
 
-        void ParseMessage(zmq::message_t& msg);
-
-        void ParseJsonMsg(const Json::Value &msg);
-        void ParseJsonPathsMsg(const Json::Value &msg);
+        void ParsePath(const std::string &name, const zmq::message_t &msg);
 
     private:
         zmq::context_t m_ctx;

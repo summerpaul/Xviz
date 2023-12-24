@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 16:47:32
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 11:03:15
+ * @Last Modified time: 2023-12-24 15:47:26
  */
 #include <stdint.h>
 
@@ -50,12 +50,11 @@ namespace xviz
     typedef std::vector<Vector2f> Path2f;
     typedef std::vector<Vector2i> Path2i;
 
-    struct ColorPath
-    {
-        COLOR color;
-        Path2f points;
-        double width = 0.05;
-    };
+    const std::string MSG_PATH = "MSG_PATH";
+    
+
+
+    
 
 } // namespace xviz
 

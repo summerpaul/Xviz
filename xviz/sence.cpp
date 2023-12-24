@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 00:49:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 11:29:03
+ * @Last Modified time: 2023-12-24 16:43:36
  */
 #include <iostream>
 
@@ -48,15 +48,20 @@ namespace xviz
         m_mousePose = p;
     }
 
-    void Sence::AddPath(const std::string &name, const ColorPath &path)
+    void Sence::AddPath(const std::string &name, const Path2f &path)
     {
-        m_paths[name] = path;
-        if (m_pathsDraw.count(name) == 0)
+
+        if (m_paths.find(name) == m_paths.end())
         {
-            std::cout << "add draw_flag" << std::endl;
-            m_pathsDraw[name] = true;
+            m_paths[name].draw = true;
+            m_paths[name].color = int(COLOR::RED);
+            m_paths[name].width = 0.05;
         }
+
+        m_paths[name].path = path;
+   
     }
+
 
     void Sence::Draw(const Settings &settings)
     {
@@ -105,40 +110,42 @@ namespace xviz
         for (auto &path : m_paths)
         {
 
-            if (path.second.points.size() < 2 || m_pathsDraw[path.first] == false)
+            if (path.second.path.size() < 2 || path.second.draw == false)
             {
                 continue;
             }
 
-            for (int i = 1; i < path.second.points.size(); i++)
+            for (int i = 1; i < path.second.path.size(); i++)
             {
-                Vector2f p0 = path.second.points[i - 1];
-                Vector2f p1 = path.second.points[i];
-                g_debugDraw.DrawSegment(b2Vec2(p0.x, p0.y), b2Vec2(p1.x, p1.y), COLOR2b2Color(path.second.color), path.second.width);
+                Vector2f p0 = path.second.path[i - 1];
+                Vector2f p1 = path.second.path[i];
+                b2Color path_color = Int2b2Color(path.second.color);
+                g_debugDraw.DrawSegment(b2Vec2(p0.x, p0.y), b2Vec2(p1.x, p1.y), path_color,path.second.width);
             }
         }
     }
 
- 
-    b2Color Sence::COLOR2b2Color(const COLOR &color)
+    b2Color Sence::Int2b2Color(const int &color)
     {
-        if (color == COLOR::WHITE)
+        COLOR new_color = COLOR(color);
+        if (new_color == COLOR::WHITE)
         {
             return WHITE;
         }
-        else if (color == COLOR::BLACK)
+        else if (new_color == COLOR::BLACK)
         {
             return BLACK;
         }
-        else if (color == COLOR::BLUE)
+        else if (new_color == COLOR::BLUE)
         {
             return BLUE;
         }
-        else if (color == COLOR::GREEN)
+        else if (new_color == COLOR::GREEN)
         {
             return GREEN;
         }
-        else if (color == COLOR::RED){
+        else if (new_color == COLOR::RED)
+        {
             return RED;
         }
         return WHITE;

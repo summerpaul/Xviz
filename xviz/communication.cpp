@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 09:42:26
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 11:04:53
+ * @Last Modified time: 2023-12-24 16:06:04
  */
 #include <iostream>
 #include "communication.h"
@@ -62,65 +62,38 @@ namespace xviz
         while (m_running)
         {
 
-            zmq::message_t recv_msg;
-            zmq::recv_result_t result = m_sub.recv(recv_msg);
-            if (recv_msg.size() > 0)
-            {
-                ParseMessage(recv_msg);
-            }
-        }
-    }
-
-    void Communication::ParseMessage(zmq::message_t &msg)
-    {
-        Json::Value json_msg;
-        Json::Reader reader;
-        reader.parse(msg.to_string(), json_msg);
-        ParseJsonMsg(json_msg);
-    }
-
-    void Communication::ParseJsonMsg(const Json::Value &msg)
-    {
-        if (msg["paths"].type() != Json::nullValue)
-        {
-            ParseJsonPathsMsg(msg["paths"]);
-        }
-    }
-
-    void Communication::ParseJsonPathsMsg(const Json::Value &msg)
-    {
-
-        Json::Value::Members members = msg.getMemberNames();
-        for (auto iterMember = members.begin(); iterMember != members.end(); iterMember++)
-        {
-            std::string strKey = *iterMember;
-            Json::Value json_path = msg[strKey];
-
-            ColorPath color_path;
-            if (json_path["color"].type() != Json::nullValue)
-            {
-                color_path.color = COLOR(json_path["color"].asInt());
-            }
-
-            if (json_path["points"].type() != Json::nullValue)
+            std::vector<zmq::message_t> recv_msgs;
+            zmq::recv_result_t result =
+                zmq::recv_multipart(m_sub, std::back_inserter(recv_msgs));
+            if (recv_msgs.size() > 2)
             {
 
-                for (auto &json_pt : json_path["points"])
+                if (recv_msgs[0].to_string() == MSG_PATH)
                 {
-                    Vector2f pt;
-                    pt.x = json_pt["x"].asDouble();
-                    pt.y = json_pt["y"].asDouble();
-                    color_path.points.emplace_back(pt);
+                    ParsePath(recv_msgs[1].to_string(), recv_msgs[2]);
                 }
             }
-
-            if (json_path["width"].type() != Json::nullValue)
-            {
-                color_path.width = json_path["width"].asDouble();
-            }
-
-            g_sence.AddPath(strKey, color_path);
         }
+    }
+    void Communication::ParsePath(const std::string &name, const zmq::message_t &msg)
+    {
+
+        int size = msg.size();
+        char buff[size];
+        memcpy(buff, msg.data(), size);
+        std_msgs::Path2f proto_path;
+        proto_path.ParseFromArray(buff, size);
+
+        Path2f path;
+        for (auto &proto_pt : proto_path.points())
+        {
+            Vector2f pt;
+            pt.x = proto_pt.x();
+            pt.y = proto_pt.y();
+            path.emplace_back(pt);
+        }
+
+        g_sence.AddPath(name, path);
     }
 
 }

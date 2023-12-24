@@ -26,26 +26,26 @@ include_directories(
     3rdParty/imgui_impl
     3rdParty/imgui
     common
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
-
-
-
 
 link_directories(
     ${THIRD_PARTY_LIB}
 )
 
 add_subdirectory(3rdParty)
+
+add_subdirectory(protoMessage)
       
 add_subdirectory(xviz)
-add_executable(XvizNode main.cpp)
+add_executable(XvizNode app/main.cpp)
 target_link_libraries(XvizNode xviz)
 
 
 
 add_subdirectory(xvizMsgSender)
 
-add_executable(xvizSenderDemo xvizSenderDemo.cpp)
+add_executable(xvizSenderDemo app/xvizSenderDemo.cpp)
 target_link_libraries(xvizSenderDemo xvizMsgSender)
 
 if(WIN32)

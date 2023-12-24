@@ -1,2 +1,2 @@
 add_library(xvizMsgSender xvizMsgSender.cpp)
-target_link_libraries(xvizMsgSender zmq jsoncpp)
+target_link_libraries(xvizMsgSender zmq jsoncpp protoMessage)
