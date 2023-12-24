@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 22:44:50
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 22:42:20
+ * @Last Modified time: 2023-12-24 10:45:18
  */
 
 #ifndef DRAW_H
@@ -19,6 +19,8 @@ struct GLRenderPoints;
 struct GLRenderLines;
 struct GLRenderTriangles;
 struct GLFWwindow;
+
+const b2Mat22 rotation_mat(cos(M_PI_2), -sin(M_PI_2), sin(M_PI_2), cos(M_PI_2));
 
 struct Camera
 {
@@ -46,7 +48,6 @@ public:
 	void Create();
 	void Destroy();
 
-
 	void DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color) override;
 
 	void DrawSolidPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color) override;
@@ -56,6 +57,8 @@ public:
 	void DrawSolidCircle(const b2Vec2 &center, float radius, const b2Vec2 &axis, const b2Color &color) override;
 
 	void DrawSegment(const b2Vec2 &p1, const b2Vec2 &p2, const b2Color &color) override;
+
+	void DrawSegment(const b2Vec2 &p1, const b2Vec2 &p2, const b2Color &color, const double width);
 
 	void DrawTransform(const b2Transform &xf) override;
 

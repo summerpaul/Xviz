@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 09:42:26
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 01:18:53
+ * @Last Modified time: 2023-12-24 11:04:53
  */
 #include <iostream>
 #include "communication.h"
@@ -114,9 +114,13 @@ namespace xviz
                 }
             }
 
-            g_sence.AddPath(strKey,color_path);
+            if (json_path["width"].type() != Json::nullValue)
+            {
+                color_path.width = json_path["width"].asDouble();
+            }
+
+            g_sence.AddPath(strKey, color_path);
         }
     }
-    
-  
+
 }

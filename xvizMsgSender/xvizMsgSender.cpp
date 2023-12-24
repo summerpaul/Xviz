@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 19:44:45
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 00:47:34
+ * @Last Modified time: 2023-12-24 11:03:47
  */
 #include <iostream>
 #include "xvizMsgSender.h"
@@ -44,6 +44,7 @@ namespace xviz
         std::cout << "start add path " << std::endl;
         Json::Value colorPath;
         colorPath["color"] = int(path.color);
+        colorPath["width"] = path.width;
         for (auto &pt : path.points)
         {
             Json::Value json_pt;

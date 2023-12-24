@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 22:44:57
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-22 22:52:40
+ * @Last Modified time: 2023-12-24 10:58:10
  */
 
 #include "draw.h"
@@ -444,6 +444,7 @@ struct GLRenderLines
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		glUseProgram(0);
+		//
 
 		m_count = 0;
 	}
@@ -751,6 +752,24 @@ void DebugDraw::DrawSegment(const b2Vec2 &p1, const b2Vec2 &p2, const b2Color &c
 {
 	m_lines->Vertex(p1, color);
 	m_lines->Vertex(p2, color);
+}
+
+void DebugDraw::DrawSegment(const b2Vec2 &p1, const b2Vec2 &p2, const b2Color &color, const double width)
+{
+
+	b2Vec2 dir = p2 - p1;
+	dir.Normalize();
+	// b2Mat22 rotation_mat(cos0.5*b2_pi );
+	b2Vec2 left_norm = b2MulT(rotation_mat, dir);
+	b2Vec2 right_norm = b2MulT(rotation_mat.GetInverse(), dir);
+	b2Vec2 new_p0 = p1 + 0.5 * width * left_norm;
+	b2Vec2 new_p1 = p2 + 0.5 * width * left_norm;
+	b2Vec2 new_p2 = p2 + 0.5 * width * right_norm;
+	b2Vec2 new_p3 = p1 + 0.5 * width * right_norm;
+	b2Vec2  polygon[4] ={new_p0,new_p1,new_p2,new_p3}; 
+	DrawSolidPolygon(polygon,4,color);
+	//m_lines->Vertex(p1, color);
+	//m_lines->Vertex(p2, color);
 }
 
 //
