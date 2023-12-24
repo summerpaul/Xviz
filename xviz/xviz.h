@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:17
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 16:29:46
+ * @Last Modified time: 2023-12-24 21:42:37
  */
 #include <stdint.h>
 
@@ -23,6 +23,7 @@
 #include "sence.h"
 #include "imfilebrowser.h"
 #include "communication.h"
+#include "images.h"
 namespace xviz
 {
 
@@ -61,7 +62,7 @@ namespace xviz
         static b2Vec2 s_clickPointWS;
         static bool s_rightMouseDown;
 
-        ImGui::FileBrowser fileDialog;
+        ImGui::FileBrowser m_fileDialog;
         Communication m_communication;
 
         const char *m_colorItems[5] = {"WHITE",

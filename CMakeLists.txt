@@ -25,6 +25,7 @@ include_directories(
     3rdParty/glfw/include
     3rdParty/imgui_impl
     3rdParty/imgui
+    3rdParty/ImGuiFileDialog
     common
     ${CMAKE_CURRENT_SOURCE_DIR}
 )

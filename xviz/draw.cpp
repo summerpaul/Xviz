@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 22:44:57
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 10:58:10
+ * @Last Modified time: 2023-12-24 23:00:56
  */
 
 #include "draw.h"
@@ -11,7 +11,7 @@
 #include <stdlib.h>
 
 #include "imgui.h"
-
+#include <iostream>
 #define BUFFER_OFFSET(x) ((const void *)(x))
 
 DebugDraw g_debugDraw;
@@ -766,10 +766,10 @@ void DebugDraw::DrawSegment(const b2Vec2 &p1, const b2Vec2 &p2, const b2Color &c
 	b2Vec2 new_p1 = p2 + 0.5 * width * left_norm;
 	b2Vec2 new_p2 = p2 + 0.5 * width * right_norm;
 	b2Vec2 new_p3 = p1 + 0.5 * width * right_norm;
-	b2Vec2  polygon[4] ={new_p0,new_p1,new_p2,new_p3}; 
-	DrawSolidPolygon(polygon,4,color);
-	//m_lines->Vertex(p1, color);
-	//m_lines->Vertex(p2, color);
+	b2Vec2 polygon[4] = {new_p0, new_p1, new_p2, new_p3};
+	DrawSolidPolygon(polygon, 4, color);
+	// m_lines->Vertex(p1, color);
+	// m_lines->Vertex(p2, color);
 }
 
 //
@@ -853,4 +853,23 @@ void DebugDraw::Flush()
 	m_triangles->Flush();
 	m_lines->Flush();
 	m_points->Flush();
+	if (m_images.hasImages())
+	{
+		std::cout << "show image " << std::endl;
+		m_images.uploadSelectedImage();
+		if(!m_images.selected()){
+			std::cout << "no ong " << std::endl;
+		}
+
+		
+	}
+}
+
+void DebugDraw::AddImage( Image *img)
+{
+	m_selectedTab = m_images.m_images.size();
+
+	m_images.m_images.push_back(img);
+
+	m_images.select(m_selectedTab);
 }

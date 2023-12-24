@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 22:44:50
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 10:45:18
+ * @Last Modified time: 2023-12-24 22:18:50
  */
 
 #ifndef DRAW_H
@@ -13,7 +13,7 @@
 #include "GLFW/glfw3.h"
 
 #include "box2d/box2d.h"
-
+#include "images.h"
 struct b2AABB;
 struct GLRenderPoints;
 struct GLRenderLines;
@@ -21,6 +21,9 @@ struct GLRenderTriangles;
 struct GLFWwindow;
 
 const b2Mat22 rotation_mat(cos(M_PI_2), -sin(M_PI_2), sin(M_PI_2), cos(M_PI_2));
+
+
+using namespace xviz;
 
 struct Camera
 {
@@ -71,11 +74,16 @@ public:
 	void DrawAABB(b2AABB *aabb, const b2Color &color);
 
 	void Flush();
+	
+	void AddImage(Image *img);
 
 	bool m_showUI;
 	GLRenderPoints *m_points;
 	GLRenderLines *m_lines;
 	GLRenderTriangles *m_triangles;
+
+	xviz::Images m_images;
+	size_t m_selectedTab = 0;
 };
 
 extern DebugDraw g_debugDraw;

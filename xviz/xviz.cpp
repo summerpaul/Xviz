@@ -2,11 +2,12 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 16:51:14
+ * @Last Modified time: 2023-12-24 22:49:08
  */
 #include <iostream>
 #include "xviz.h"
 #include "colors.h"
+#include "image.h"
 namespace xviz
 {
 
@@ -24,6 +25,7 @@ namespace xviz
         g_debugDraw.Destroy();
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
         glfwTerminate();
 
         s_settings.Save();
@@ -68,8 +70,8 @@ namespace xviz
         g_debugDraw.Create();
         CreateUI(g_mainWindow, glsl_version);
 
-        fileDialog.SetTitle("title");
-        fileDialog.SetTypeFilters({".h", ".cpp"});
+        m_fileDialog.SetTitle("文件加载");
+        m_fileDialog.SetTypeFilters({".png", ".json"});
 
         return true;
     }
@@ -116,7 +118,7 @@ namespace xviz
             ImGui::Render();
 
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-            glfwSwapBuffers(g_mainWindow);
+            glfwSwapBuffers(g_mainWindow); // 双缓冲
             glfwPollEvents();
 
             std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
@@ -134,25 +136,27 @@ namespace xviz
     {
         // std::cout << "draw " << std::endl;
         g_sence.Draw(s_settings);
+
+        // ImGui::Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
     }
 
     void Xviz::CreateUI(GLFWwindow *window, const char *glslVersion)
     {
 
         IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
+        ImGui::CreateContext(); // 创建上下文
         ImGuiIO &io = ImGui::GetIO();
         (void)io;
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // 允许键盘控制
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // 允许游戏手柄控制
 
         // Setup Dear ImGui style
         // ImGui::StyleColorsDark();
         ImGui::StyleColorsLight();
-
+        // 设置渲染器后端
         ImGui_ImplGlfw_InitForOpenGL(window, true);
-
         ImGui_ImplOpenGL3_Init(glslVersion);
+        // 设置微软雅黑中文字体
         const char *fontPath = "../data/msyh.ttf";
         io.Fonts->AddFontFromFileTTF(fontPath, 8.0f * s_displayScale,
                                      nullptr, io.Fonts->GetGlyphRangesChineseFull());
@@ -275,8 +279,9 @@ namespace xviz
         {
             if (ImGui::BeginMenu("文件"))
             {
-                if (ImGui::MenuItem("ddd"))
+                if (ImGui::MenuItem("添加图片"))
                 {
+                    m_fileDialog.Open();
                 }
                 ImGui::EndMenu();
             }
@@ -301,6 +306,23 @@ namespace xviz
                 ImGui::EndMenu();
             }
             ImGui::EndMainMenuBar();
+        }
+
+        m_fileDialog.Display();
+
+        if (m_fileDialog.HasSelected())
+        {
+
+            std::string pngFile = m_fileDialog.GetSelected().string();
+
+            auto img = new Image();
+            img->m_fullPath = pngFile;
+            std::replace(img->m_fullPath.begin(), img->m_fullPath.end(), '\\', '/');
+            img->m_name = img->m_fullPath.substr(img->m_fullPath.find_last_of('/') + 1);
+            img->fromFile(pngFile.data());
+            g_debugDraw.AddImage(img);
+
+            m_fileDialog.ClearSelected();
         }
     }
 
