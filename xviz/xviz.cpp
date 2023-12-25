@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-25 20:08:50
+ * @Last Modified time: 2023-12-25 23:15:01
  */
 #include <iostream>
 #include "xviz.h"
@@ -314,13 +314,6 @@ namespace xviz
         {
 
             std::string pngFile = m_fileDialog.GetSelected().string();
-
-            auto img = new Image();
-            img->m_fullPath = pngFile;
-            std::replace(img->m_fullPath.begin(), img->m_fullPath.end(), '\\', '/');
-            img->m_name = img->m_fullPath.substr(img->m_fullPath.find_last_of('/') + 1);
-            img->fromFile(pngFile.data());
-            g_debugDraw.AddImage(img);
 
             m_fileDialog.ClearSelected();
         }
