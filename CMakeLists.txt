@@ -37,35 +37,36 @@ link_directories(
 )
 
 add_subdirectory(3rdParty)
+add_subdirectory(core)
 
-add_subdirectory(protoMessage)
+# add_subdirectory(protoMessage)
       
-add_subdirectory(xviz)
-add_executable(XvizNode app/main.cpp)
-target_link_libraries(XvizNode xviz)
+# add_subdirectory(xviz)
+# add_executable(XvizNode app/main.cpp)
+# target_link_libraries(XvizNode xviz)
 
 
 
-add_subdirectory(xvizMsgSender)
+# add_subdirectory(xvizMsgSender)
 
-add_executable(xvizSenderDemo app/xvizSenderDemo.cpp)
-target_link_libraries(xvizSenderDemo xvizMsgSender)
+# add_executable(xvizSenderDemo app/xvizSenderDemo.cpp)
+# target_link_libraries(xvizSenderDemo xvizMsgSender)
 
-if(WIN32)
-file(COPY 3rdParty/bin/x64-windows/fmt.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
-file(COPY 3rdParty/bin/x64-windows/jsoncpp.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
-file(COPY 3rdParty/bin/x64-windows/libzmq-mt-4_3_5.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
-file(COPY 3rdParty/bin/x64-windows/libprotobuf.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
-endif()
+# if(WIN32)
+# file(COPY 3rdParty/bin/x64-windows/fmt.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
+# file(COPY 3rdParty/bin/x64-windows/jsoncpp.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
+# file(COPY 3rdParty/bin/x64-windows/libzmq-mt-4_3_5.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
+# file(COPY 3rdParty/bin/x64-windows/libprotobuf.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
+# endif()
 
 
 
-add_custom_command(
-         TARGET XvizNode POST_BUILD
-         COMMAND ${CMAKE_COMMAND} -E copy_directory
-                 ${CMAKE_CURRENT_SOURCE_DIR}/data/
-                 ${CMAKE_CURRENT_BINARY_DIR}/data/
-                 )
+# add_custom_command(
+#          TARGET XvizNode POST_BUILD
+#          COMMAND ${CMAKE_COMMAND} -E copy_directory
+#                  ${CMAKE_CURRENT_SOURCE_DIR}/data/
+#                  ${CMAKE_CURRENT_BINARY_DIR}/data/
+#                  )
          
 
- source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${TESTBED_SOURCE_FILES})
+#  source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${TESTBED_SOURCE_FILES})
