@@ -2,12 +2,13 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 20:20:57
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 15:35:42
+ * @Last Modified time: 2023-12-25 09:26:51
  */
 #include <iostream>
 #include "xvizMsgSender/xvizMsgSender.h"
 #include <thread>
 #include <chrono>
+#include "defines.h"
 using namespace std;
 
 int main(int argc, char const *argv[])

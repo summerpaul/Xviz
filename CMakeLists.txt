@@ -5,12 +5,17 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 
+
+set(CMAKE_CXX_FLAGS -m64)
+set(CMAKE_C_FLAGS -m64)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#set (CMAKE_BUILD_TYPE Release)
 
-
-
-
+if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+    message("Please switch to x64 build.")
+    return()
+endif()
 
 if(WIN32)
     set(THIRD_PARTY_LIB 3rdParty/lib/x64-windows)
@@ -53,6 +58,7 @@ if(WIN32)
 file(COPY 3rdParty/bin/x64-windows/fmt.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
 file(COPY 3rdParty/bin/x64-windows/jsoncpp.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
 file(COPY 3rdParty/bin/x64-windows/libzmq-mt-4_3_5.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
+file(COPY 3rdParty/bin/x64-windows/libprotobuf.dll DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/bin/Debug")
 endif()
 
 

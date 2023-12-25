@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 22:49:08
+ * @Last Modified time: 2023-12-25 09:55:04
  */
 #include <iostream>
 #include "xviz.h"
@@ -158,7 +158,7 @@ namespace xviz
         ImGui_ImplOpenGL3_Init(glslVersion);
         // 设置微软雅黑中文字体
         const char *fontPath = "../data/msyh.ttf";
-        io.Fonts->AddFontFromFileTTF(fontPath, 8.0f * s_displayScale,
+        io.Fonts->AddFontFromFileTTF(fontPath, 12.0f * s_displayScale,
                                      nullptr, io.Fonts->GetGlyphRangesChineseFull());
     }
 

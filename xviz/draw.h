@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 22:44:50
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 22:18:50
+ * @Last Modified time: 2023-12-25 09:08:04
  */
 
 #ifndef DRAW_H
@@ -14,6 +14,8 @@
 
 #include "box2d/box2d.h"
 #include "images.h"
+#include <cmath>
+#include "defines.h"
 struct b2AABB;
 struct GLRenderPoints;
 struct GLRenderLines;

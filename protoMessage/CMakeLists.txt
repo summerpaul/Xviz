@@ -6,7 +6,9 @@ set(PB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/pb)
 file(GLOB PROTO_FILES ${PROTO_PATH}/*.proto )
 
 if(UNIX)
-    set(PROTOC ../3rdParty/bin/arm64-osx/protoc)
+    set(PROTOC ../3rdParty/tools/arm64-osx/protoc)
+elseif(WIN32)
+    set(PROTOC ../3rdParty/tools/x64-windows/protoc.exe)
 endif()
 
 # 删除之前的文件
@@ -21,4 +23,4 @@ file(GLOB PROTO_SRCS  ${PB_DIR}/*.cc)
 file(GLOB PROTO_HDRS ${PB_DIR}/*.h)
 # 生成静态库
 add_library(${PROJECT_NAME} STATIC ${PROTO_SRCS} ${PROTO_HDRS} )
-target_link_libraries(${PROJECT_NAME} protobuf)
+target_link_libraries(${PROJECT_NAME} libprotobuf.lib)

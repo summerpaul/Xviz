@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 19:44:45
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 15:47:16
+ * @Last Modified time: 2023-12-25 10:20:14
  */
 #include <iostream>
 #include "xvizMsgSender.h"
@@ -59,10 +59,9 @@ namespace xviz
     {
         std::lock_guard<std::mutex> lock(m_mtx);
         zmq::message_t target_msg;
-        int size = proto_msg.ByteSizeLong();
-        char buff[size];
-        proto_msg.SerializeToArray(buff, size);
-        target_msg.rebuild(buff, size);
+        std::string string_msg;
+        proto_msg.SerializeToString(&string_msg);
+        target_msg.rebuild(string_msg);
         m_pub.send(zmq::message_t(std::string(msg_type)), zmq::send_flags::sndmore);
         m_pub.send(zmq::message_t(std::string(topic)), zmq::send_flags::sndmore);
         m_pub.send(target_msg);

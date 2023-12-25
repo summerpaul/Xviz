@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 16:47:32
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 15:47:26
+ * @Last Modified time: 2023-12-25 09:07:52
  */
 #include <stdint.h>
 
@@ -51,10 +51,6 @@ namespace xviz
     typedef std::vector<Vector2i> Path2i;
 
     const std::string MSG_PATH = "MSG_PATH";
-    
-
-
-    
 
 } // namespace xviz
 

@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-23 09:42:26
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-24 16:06:04
+ * @Last Modified time: 2023-12-25 10:21:44
  */
 #include <iostream>
 #include "communication.h"
@@ -78,12 +78,9 @@ namespace xviz
     void Communication::ParsePath(const std::string &name, const zmq::message_t &msg)
     {
 
-        int size = msg.size();
-        char buff[size];
-        memcpy(buff, msg.data(), size);
+        
         std_msgs::Path2f proto_path;
-        proto_path.ParseFromArray(buff, size);
-
+        proto_path.ParseFromString(msg.to_string());
         Path2f path;
         for (auto &proto_pt : proto_path.points())
         {
