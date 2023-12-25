@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 21:02:25
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-25 09:55:04
+ * @Last Modified time: 2023-12-25 20:08:50
  */
 #include <iostream>
 #include "xviz.h"
@@ -158,7 +158,7 @@ namespace xviz
         ImGui_ImplOpenGL3_Init(glslVersion);
         // 设置微软雅黑中文字体
         const char *fontPath = "../data/msyh.ttf";
-        io.Fonts->AddFontFromFileTTF(fontPath, 12.0f * s_displayScale,
+        io.Fonts->AddFontFromFileTTF(fontPath, s_settings.m_fontSize * s_displayScale,
                                      nullptr, io.Fonts->GetGlyphRangesChineseFull());
     }
 
@@ -338,7 +338,8 @@ namespace xviz
             {
                 if (ImGui::BeginTabItem("Settings"))
                 {
-                    ImGui::SliderFloat("Hertz", &s_settings.m_hertz, 5.0f, 120.0f, "%.0f hz");
+                    ImGui::SliderInt("字体大小", &s_settings.m_fontSize, 10, 20);
+                    ImGui::SliderFloat("画面频率", &s_settings.m_hertz, 5.0f, 120.0f, "%.0f hz");
                     ImGui::Checkbox("绘制网络", &s_settings.m_drawGrid);
                     ImGui::SliderInt("网格宽度", &s_settings.m_gridWidth, 1, 40);
                     ImGui::SliderInt("网格高度", &s_settings.m_gridHeight, 1, 40);

@@ -2,7 +2,7 @@
  * @Author: Xia Yunkai
  * @Date:   2023-12-22 23:22:24
  * @Last Modified by:   Xia Yunkai
- * @Last Modified time: 2023-12-23 19:27:43
+ * @Last Modified time: 2023-12-25 20:08:19
  */
 #include <iostream>
 #include "settings.h"
@@ -27,6 +27,7 @@ void Settings::Save()
     json_cfg["gridInterval"] = m_gridInterval;
     json_cfg["gridWidth"] = m_gridWidth;
     json_cfg["subConnect"] = m_subConnect;
+    json_cfg["fontSize"] = m_fontSize;
 
     std::string out = write.write(json_cfg);
     std::ofstream os(fileName);
@@ -93,9 +94,13 @@ void Settings::Load()
         m_gridInterval = json_cfg["gridInterval"].asInt();
     }
 
-
-     if (json_cfg["subConnect"].type() != Json::nullValue)
+    if (json_cfg["subConnect"].type() != Json::nullValue)
     {
         m_subConnect = json_cfg["subConnect"].asString();
+    }
+
+    if (json_cfg["fontSize"].type() != Json::nullValue)
+    {
+        m_fontSize = json_cfg["fontSize"].asInt();
     }
 }
